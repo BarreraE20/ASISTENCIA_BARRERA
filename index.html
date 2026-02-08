@@ -63,8 +63,15 @@
   
 <body>
 
+
+  
+
+
   
   <script>
+
+
+    /*        version anterior  sin  nada
     //const AS_URL_BASE = "https://script.google.com/macros/s/AKfycbyIY18A2pFnzcGmzWD5w22KACVzyzAfNNZi8Bw07T9OP65X75-YS9-xClJw3vY_5Pgp/exec";
     
     const AS_URL_BASE = "https://script.google.com/macros/s/AKfycbyaU2O2aJ-cwLdUptLjRosSxmVv_Vu6M_NObuM-SB6NvcbE79R-liMjeYW387aCVa8c/exec";
@@ -86,9 +93,62 @@
         }
       })
       .catch(err => console.log(err))
-    }
+    }    
+
+       */
+
+///         version nueva ///////////////////
+
+
+
+
+  
+  const AS_URL_BASE = "https://script.google.com/macros/s/AKfycbyaU2O2aJ-cwLdUptLjRosSxmVv_Vu6M_NObuM-SB6NvcbE79R-liMjeYW387aCVa8c/exec";
+
+  const params = new URLSearchParams(window.location.search);
+  const k = params.get("k");
+
+  const showMessage = (msg) => {
+    document.body.innerHTML = `
+      <h2>${msg}</h2>
+    `;
+  };
+
+  if (k) {
+    fetch(`${AS_URL_BASE}?k=${encodeURIComponent(k)}`)
+      .then(r => r.text())
+      .then(r => {
+        console.log("Respuesta AS:", r);
+
+        if (r === "NO_AUTH") {
+          showMessage("❌ Acceso no autorizado");
+          return;
+        }
+
+        if (!r) {
+          showMessage("⚠️ Código inválido");
+          return;
+        }
+
+        // ✅ Redirección normal
+        window.location.replace(r);
+      })
+      .catch(() => {
+        showMessage("⚠️ Error de conexión");
+      });
+  } else {
+    showMessage("❌ QR inválido");
+  }
+
+
+
+    
 
   </script>
+
+
+
+  
   
   <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
   
